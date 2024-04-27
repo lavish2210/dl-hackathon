@@ -63,20 +63,22 @@ def get_image(request):
     
     current_path = os.getcwd()
     dirname = os.path.dirname(current_path)
-    modelPath = os.path.join(dirname, "diffusion", "home","alphanumeric.pt")
+    modelPath = os.path.join(dirname, "project", "diffusion", "home","alphanumeric.pt")
     if exists(modelPath):
         ddpm.load_state_dict(load(modelPath, map_location = device))
+    
     with no_grad():
         c = tensor([toGenerate] * 4).to(device)
         gen = ddpm.sample((4, 3, 32, 32), c, device)
-        fig, ax = plt.subplots(2, 2)
+        fig, ax = plt.subplots(2, 2, figsize = (4, 4))
+        fig.set_facecolor("#0d193400")
         for i in range(4):
             img = gen[i].cpu().numpy()
             ax[i // 2, i % 2].axis("off")
             ax[i // 2, i % 2].imshow(img.transpose(1, 2, 0))
         file = f"{toGenerate}.png"
-        finalPath = os.path.join(dirname, "diffusion", "home", "static", file)
-        # print(finalPath)
+        finalPath = os.path.join(dirname, "project", "diffusion", "home", "static", file)
+        print(finalPath)
         plt.savefig(finalPath)
         plt.close()
     return JsonResponse({'image_url':file}, safe=False)

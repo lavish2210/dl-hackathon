@@ -1,140 +1,196 @@
 {% load static %}
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
+
 <head>
-    <title>Text Input and Image Display</title>
-    <style>
-        /* Inline CSS Code Starts Here */
-        body {
-            font-family: "Arial Black", Gadget, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #525d90;
-            animation: backgroundAnimation 20s infinite alternate;
-            /* background-image: url("/static/mandi-campus.jpg"); 
-            background-color: rgba(255, 255, 255, 0.5); 
-            background-blend-mode: overlay; */
-        }
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
 
-        @keyframes backgroundAnimation {
-            0% { background-color: #525d90; }
-            50% { background-color: #90a4ce; }
-            100% { background-color: #525d90; }
-        }
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" type="text/css">
 
-        #upper-half {
-            height: 35vh;
-            text-align: center;
-            padding-top: 20px;
-        }
-
-        #image-container {
-            margin-top: 20px;
-        }
-
-        img {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        #lower-half {
-            text-align: center;
-            color: #fff;
-        }
-
-        p {
-            font-size: 30px;
-            line-height: 1.6;
-            width: 60%; 
-            margin: 0 auto;
-            font-style: italic;
-            color:#333
-        }
-
-        ul {
-            margin-top: 0;
-            padding-left: 20px;
-        }
-
-        li {
-            margin-bottom: 5px;
-            text-align: center;
-            font-size: 22px;
-            color:#09154c
-        }
-
-        form {
-            margin-top: 20px;
-            border-radius: 50%;
-            width: 60%; /* Adjust as needed */
-            margin: 0 auto;
-        }
-
-        input[type="text"] {
-            width: 200px;
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        #submit-btn {
-            padding: 7px 15px;
-            background-color: #007bff;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        /* Inline CSS Code Ends Here */
-    </style>
+    <title>DL Hackathon</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('#submit-btn').click(function(e){
+        $(document).ready(function () {
+            $('#submit-btn').click(function (e) {
                 e.preventDefault();
                 var inputText = $('#input-text').val();
+
+                // Show loader
+                $('#image-container').html('<div class="spinner"></div>');
+
                 $.ajax({
                     url: '{% url "get-image" %}',
                     data: {
                         'input_text': inputText
                     },
-                    success: function(data){
+                    success: function (data) {
                         if (data.image_url) {
                             var url = data.image_url;
                             var finalLink = '<img src="/static/';
                             finalLink = finalLink.concat(url);
                             finalLink = finalLink.concat('" alt="Image">');
+
+                            // Remove loader and display image
                             $('#image-container').html(finalLink);
                         } else {
-                            $('#image-container').html('<p>Please wait...</p>');
+                            $('#image-container').html('<p>No image found.</p>');
                         }
+                    },
+                    error: function () {
+                        // Handle error case
+                        $('#image-container').html('<p>Error fetching image.</p>');
                     }
                 });
             });
         });
     </script>
 </head>
+
 <body>
-    <div style="background-color: #333; overflow: hidden;">
-        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="/">Home</a>
-        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="about">About</a>
-    </div>
-    
-    <div id="upper-half">
-        <div id="image-container">
-            <!-- Image will be displayed here -->
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+            <a href="index.html" class="logo d-flex align-items-center">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <h1>Badshah The Boys</h1>
+            </a>
+
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Problem Statements</a></li>
+                    <li><a href="pricing.html">Dataset</a></li>
+
+
+                </ul>
+            </nav><!-- .navbar -->
+
         </div>
-    </div>
-    <div id="lower-half">
-        <p>In order generate image, enter one of the following from-
-            <ul>
-                <li>Digits [0-9] or Alphabets[a/A - z/Z] or @, #, $, &</li>
-                <li>Animals: Dog, Cat, Horse, Spyder, Butterfly, Chicken, Sheep, Cow, Squirrel, Elephant.</li>
-            </ul>
-        </p>
-        <form>
-            <input type="text" id="input-text">
-            <button id="submit-btn">Submit</button>
-        </form>
-    </div>
+    </header><!-- End Header -->
+    <!-- End Header -->
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row gy-4 d-flex justify-content-between">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    <h2 data-aos="fade-up">Class Conditional Image Generation</h2>
+                    <p data-aos="fade-up" data-aos-delay="100">Using Diffusion Models for Image Generations</p>
+
+                    <form class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
+                        <input type="text" id="input-text" class="form-control" placeholder="Enter Prompt">
+                        <button type="submit" class="btn btn-primary" id="submit-btn">Generate</button>
+                    </form>
+
+                    <div class="row gy-4" data-aos="fade-up" data-aos-delay="400">
+
+                    </div>
+                </div>
+
+                <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out" id="image-container"
+                    style="z-index: 100;">
+                </div>
+
+            </div>
+        </div>
+    </section><!-- End Hero Section -->
+
+    <main id="main">
+
+        <!-- ======= Featured Services Section ======= -->
+        <section id="featured-services" class="featured-services">
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up">
+                        <div class="icon flex-shrink-0"><i class="fa-solid fa-cart-flatbed"></i></div>
+                        <div>
+                            <h4 class="title">Image Generation</h4>
+                            <p class="description">We're working with two datasets: alphanumeric and Animal 10, each
+                                with distinct classes. Our goal is to generate images that showcase the diversity within
+                                these datasets. By combining advanced techniques and machine learning, we aim to create
+                                visually striking and informative imagery. Through this project, we hope to push the
+                                boundaries of creativity and computational understanding, contributing to the field of
+                                artificial intelligence and visual data interpretation. </p>
+                            <a href="service-details.html" class="readmore stretched-link"><span>Learn More</span><i
+                                    class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
+                        <div class="icon flex-shrink-0"><i class="fa-solid fa-truck"></i></div>
+                        <div>
+                            <h4 class="title">Dangerous Website</h4>
+                            <p class="description">This interactive and responsive website serves as a dynamic platform
+                                to showcase our cutting-edge model for image generation. Visitors can explore the
+                                intricacies of our algorithm in real-time, gaining insights into the fascinating process
+                                of creating images from alphanumeric and Animal 10 datasets. Through user-friendly
+                                interfaces and engaging visualizations, we aim to demystify the complexities of machine
+                                learning while highlighting the artistic potential of AI. Whether you're a seasoned
+                                technologist, a curious enthusiast, or an aspiring artist, our website offers something
+                                for everyone. Dive into the world of computational creativity and discover the endless
+                                possibilities of image generation with our innovative showcase. </p>
+                            <a href="service-details.html" class="readmore stretched-link"><span>Learn More</span><i
+                                    class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                        <div class="icon flex-shrink-0"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                        <div>
+                            <h4 class="title">Different Models for training on GPU</h4>
+                            <p class="description">Trained for various different models of Gen AI, our system underwent
+                                extensive training sessions lasting approximately 4-5 hours each. Through meticulous
+                                training and fine-tuning, we've honed our models to achieve exceptional performance
+                                across a diverse range of tasks and datasets. This intensive training process has
+                                equipped our system with the versatility and adaptability needed to tackle complex
+                                challenges in image generation, text completion, and beyond. With every training
+                                session, we push the boundaries of what's possible in artificial intelligence, striving
+                                for innovation and excellence in every endeavor.</p>
+                            <a href="service-details.html" class="readmore stretched-link"><span>Learn More</span><i
+                                    class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                </div>
+
+            </div>
+        </section><!-- End Featured Services Section -->
+
+    </main><!-- End #main -->
+
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
 </body>
+
 </html>
