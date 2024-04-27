@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Text Input and Image Display</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#submit-btn').click(function(e){
+                e.preventDefault();
+                var inputText = $('#input-text').val();
+                $.ajax({
+                    url: '{% url "get-image" %}',
+                    data: {
+                        'input_text': inputText
+                    },
+                    success: function(data){
+                        if (data.image_url) {
+                            var url = data.image_url;
+                            var finalLink = '<img src="/static/';
+                            finalLink = finalLink.concat(url);
+                            finalLink = finalLink.concat('" alt="Image">');
+                            $('#image-container').html(finalLink);
+                        } else {
+                            $('#image-container').html('<p>Please wait...</p>');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <p>In order generate image, enter one of the following from-
+        <ul>
+            <li>Digits [0-9] or @, #, $, &</li>
+            <li>Animals: Dog, Cat, Horse, Spyder, Butterfly, Chicken, Sheep, Cow, Squirrel, Elephant.</li>
+        </ul>
+    </p>
+    <form>
+        <input type="text" id="input-text">
+        <button id="submit-btn">Submit</button>
+    </form>
+    <div id="image-container"></div>
+</body>
+</html>
