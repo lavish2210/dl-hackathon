@@ -3,6 +3,89 @@
 <html>
 <head>
     <title>Text Input and Image Display</title>
+    <style>
+        /* Inline CSS Code Starts Here */
+        body {
+            font-family: "Arial Black", Gadget, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #525d90;
+            animation: backgroundAnimation 20s infinite alternate;
+            /* background-image: url("/static/mandi-campus.jpg"); 
+            background-color: rgba(255, 255, 255, 0.5); 
+            background-blend-mode: overlay; */
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-color: #525d90; }
+            50% { background-color: #90a4ce; }
+            100% { background-color: #525d90; }
+        }
+
+        #upper-half {
+            height: 35vh;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        #image-container {
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        #lower-half {
+            text-align: center;
+            color: #fff;
+        }
+
+        p {
+            font-size: 30px;
+            line-height: 1.6;
+            width: 60%; 
+            margin: 0 auto;
+            font-style: italic;
+            color:#333
+        }
+
+        ul {
+            margin-top: 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 22px;
+            color:#09154c
+        }
+
+        form {
+            margin-top: 20px;
+            border-radius: 50%;
+            width: 60%; /* Adjust as needed */
+            margin: 0 auto;
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        #submit-btn {
+            padding: 7px 15px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        /* Inline CSS Code Ends Here */
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -31,16 +114,27 @@
     </script>
 </head>
 <body>
-    <p>In order generate image, enter one of the following from-
-        <ul>
-            <li>Digits [0-9] or @, #, $, &</li>
-            <li>Animals: Dog, Cat, Horse, Spyder, Butterfly, Chicken, Sheep, Cow, Squirrel, Elephant.</li>
-        </ul>
-    </p>
-    <form>
-        <input type="text" id="input-text">
-        <button id="submit-btn">Submit</button>
-    </form>
-    <div id="image-container"></div>
+    <div style="background-color: #333; overflow: hidden;">
+        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="/">Home</a>
+        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="about">About</a>
+    </div>
+    
+    <div id="upper-half">
+        <div id="image-container">
+            <!-- Image will be displayed here -->
+        </div>
+    </div>
+    <div id="lower-half">
+        <p>In order generate image, enter one of the following from-
+            <ul>
+                <li>Digits [0-9] or @, #, $, &</li>
+                <li>Animals: Dog, Cat, Horse, Spyder, Butterfly, Chicken, Sheep, Cow, Squirrel, Elephant.</li>
+            </ul>
+        </p>
+        <form>
+            <input type="text" id="input-text">
+            <button id="submit-btn">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

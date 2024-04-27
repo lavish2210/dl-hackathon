@@ -6,3 +6,6 @@ def home(request):
 
 def get_image(request):
     return JsonResponse({'image_url':'image.jpg'}, safe=False)
+
+def about(request):
+    return render(request,'about.html')
