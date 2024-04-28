@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 from math import log,sqrt
 
-device = "cpu"
+device = "cuda"
 
 class ForwardProcess(Module):
     def __init__(self, betas):

@@ -4,6 +4,7 @@ from .GenModel import DDPM
 from os.path import exists
 from torch import tensor, no_grad, load
 import matplotlib.pyplot as plt
+import matplotlib
 import os
 
 alphanumericData = {'#': 0,
@@ -51,6 +52,7 @@ def home(request):
     return render(request, 'home.html')
 
 def get_image(request):
+    matplotlib.use('agg')
     var = request.GET.get('input_text')
     
     if (var >= 'a' or var <= 'z'):
@@ -58,26 +60,29 @@ def get_image(request):
     
     num_classes = 39
     toGenerate = alphanumericData[var]
-    ddpm = DDPM(1000, 256, 64, 64, 3, num_classes)
-    device = "cpu"
+    device = "cuda"
+    ddpm = DDPM(1000, 256, 64, 64, 3, num_classes).to(device)
     
     current_path = os.getcwd()
     dirname = os.path.dirname(current_path)
-    modelPath = os.path.join(dirname, "project", "diffusion", "home","alphanumeric.pt")
+    modelPath = os.path.join(dirname, "diffusion", "home","alphanumeric.pt")
+    print(modelPath)
+    print(dirname)
     if exists(modelPath):
         ddpm.load_state_dict(load(modelPath, map_location = device))
+        print("loaded model")
     
     with no_grad():
-        c = tensor([toGenerate] * 4).to(device)
-        gen = ddpm.sample((4, 3, 32, 32), c, device)
-        fig, ax = plt.subplots(2, 2, figsize = (4, 4))
+        c = tensor([toGenerate] * 9).to(device)
+        gen = ddpm.sample((9, 3, 32, 32), c, device)
+        fig, ax = plt.subplots(3, 3, figsize = (4, 4))
         fig.set_facecolor("#0d193400")
-        for i in range(4):
+        for i in range(9):
             img = gen[i].cpu().numpy()
-            ax[i // 2, i % 2].axis("off")
-            ax[i // 2, i % 2].imshow(img.transpose(1, 2, 0))
+            ax[i // 3, i % 3].axis("off")
+            ax[i // 3, i % 3].imshow(img.transpose(1, 2, 0))
         file = f"{toGenerate}.png"
-        finalPath = os.path.join(dirname, "project", "diffusion", "home", "static", file)
+        finalPath = os.path.join(dirname, "diffusion", "home", "static", file)
         print(finalPath)
         plt.savefig(finalPath)
         plt.close()

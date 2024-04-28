@@ -1,84 +1,127 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    <style>
-        /* Inline CSS Code Starts Here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
 
-        }
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet" type="text/css">
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    <title>DL Hackathon</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#submit-btn').click(function (e) {
+                e.preventDefault();
+                var inputText = $('#input-text').val();
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+                // Show loader
+                $('#image-container').html('<div class="spinner"></div>');
 
-        p {
-            text-align: center;
-            color: #666;
-            margin-bottom: 20px;
-        }
+                $.ajax({
+                    url: '{% url "get-image" %}',
+                    data: {
+                        'input_text': inputText
+                    },
+                    success: function (data) {
+                        if (data.image_url) {
+                            var url = data.image_url;
+                            var finalLink = '<img src="/static/';
+                            finalLink = finalLink.concat(url);
+                            finalLink = finalLink.concat('" alt="Image">');
 
-        img {
-            width: 100%;
-            height: auto; 
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #007bff;
-        }
-        .project-name {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 10px;
-        }
-        li {
-            list-style-type:none;
-        }
-
-        .team-members {
-            text-align: center;
-            color: #333;
-        }
-        /* Inline CSS Code Ends Here */
-    </style>
+                            // Remove loader and display image
+                            $('#image-container').html(finalLink);
+                        } else {
+                            $('#image-container').html('<p>No image found.</p>');
+                        }
+                    },
+                    error: function () {
+                        // Handle error case
+                        $('#image-container').html('<p>Error fetching image.</p>');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
+
 <body>
-    <div style="background-color: #333; overflow: hidden;">
-        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="/">Home</a>
-        <a style="float: left; color: #f2f2f2; text-align: center; padding: 14px 16px; text-decoration: none;" href="about">About</a>
-    </div>
-    <div class="container">
-        <h1>AI HACKATHON 3.0</h1>
-        <p>IITMANDI and YAMAHA</p>
 
-        <div class="project-name">
-            <h2>Project: ClassyPICs</h2>
-        </div>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-        <div class="team-members">
-            <h3>Team Members:</h3>
-            <ul>
-                <li>Ritam Chakraborty</li>
-                <li>Sidharth Yadav</li>
-                <li>Lavish Sachdeva</li>
-                <li>Dev Haral</li>
-                <li>Shailesh Rathod</li>
-            </ul>
+            <a href="/" class="logo d-flex align-items-center">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <img src="{% static 'assets/img/logo.png' %}" alt="">
+                | 
+                <img src="{% static 'assets/img/iit.png' %}" alt="">
+                <!-- <h1>Badshah The Boys</h1> -->
+            </a>
+
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a href="/" class="active">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a target="_blank" href="https://faculty.iitmandi.ac.in/~aditya/hackathon/">Problem Statements</a></li>
+                    <li><a target="_blank" href="https://drive.google.com/drive/folders/1k6DRQc6SVCAtcd9jHvXYsOB6ZXjKwuTf">Dataset</a></li>
+
+                </ul>
+            </nav><!-- .navbar -->
+
         </div>
-        <div>
-            <img src="/static/group-photo.jpeg" alt="group photo">
+    </header><!-- End Header -->
+    <!-- End Header -->
+
+    
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row gy-4 d-flex justify-content-between">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                    
+
+                    <div class="row gy-4" data-aos="fade-up" data-aos-delay="400">
+
+                    </div>
+                </div>
+
+                <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out" id="image-container"
+                    style="z-index: 100;">
+                </div>
+
+            </div>
         </div>
-    </div>
+    </section><!-- End Hero Section -->
+
+
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
 </body>
+
 </html>
