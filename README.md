@@ -1,6 +1,6 @@
 # Class-Conditional Image Generation using Diffusion Models
 
-Youtube Video -
+Youtube Video -https://youtu.be/XP3L7xlHpqw?si=HULy3QbPYh1lZxUu
 ![Screenshot 2024-04-28 201121](https://github.com/lavish2210/dl-hackathon/assets/90788942/1cad0f36-a467-4faf-b2f0-018aa154b197)
 
 
