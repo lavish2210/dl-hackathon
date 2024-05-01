@@ -1,4 +1,6 @@
 # Class-Conditional Image Generation using Diffusion Models
+
+Youtube Video -
 ![Screenshot 2024-04-28 201121](https://github.com/lavish2210/dl-hackathon/assets/90788942/1cad0f36-a467-4faf-b2f0-018aa154b197)
 
 
@@ -10,7 +12,9 @@ This repository contains the implementation of class-conditional image generatio
 - Django
 - Deep Learning
 - Diffusion Models
-
+## Model Weights
+Link to download -
+Store this weights inside -
 ## Usage
 1. Clone the repository to your local machine.
 2. Ensure you have Python and Django installed.
