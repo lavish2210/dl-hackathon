@@ -13,8 +13,8 @@ This repository contains the implementation of class-conditional image generatio
 - Deep Learning
 - Diffusion Models
 ## Model Weights
-Link to download -
-Store this weights inside -
+- Link to download - https://drive.google.com/drive/folders/17nhOv5Egc-csYKkehPY0nhZhs06L4KC0?usp=sharing
+- Store this weights inside - diffusion/home/
 ## Usage
 1. Clone the repository to your local machine.
 2. Ensure you have Python and Django installed.
